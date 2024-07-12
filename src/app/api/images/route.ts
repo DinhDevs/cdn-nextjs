@@ -42,7 +42,6 @@ export async function GET() {
     const images = response.Contents?.map((object) => {
       return `${CDN_URL}/${object.Key}`;
     });
-    console.log(images);
     return Response.json({ images });
   } catch (error: any) {
     return Response.json({ error: error.message });
