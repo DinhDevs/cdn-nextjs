@@ -1,4 +1,3 @@
-import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
 import {
   S3Client,
   ListObjectsCommand,
