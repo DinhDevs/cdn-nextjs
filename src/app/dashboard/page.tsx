@@ -49,6 +49,7 @@ export default function Home() {
   const uploadImage = async (files: File[]) => {
     setUploading(true);
     setUploadPopupVisible(false);
+    const images: string[] = [];
 
     await Promise.all(
       files.map(async (file: File) => {
@@ -66,11 +67,12 @@ export default function Home() {
             "Content-Disposition": `attachment; filename="${file.name}"`,
           },
         });
-        setImages((prev) => [...prev, response.data.imageUrl]);
+        images.push(response.data[0].imageUrl);
       })
     );
+    console.log(images);
 
-    await getAllImages();
+    setImages((prev) => [...prev, ...images]);
 
     toast({
       title: "Image Uploaded",
@@ -80,9 +82,6 @@ export default function Home() {
     setUploading(false);
   };
 
-  useEffect(() => {
-    getAllImages();
-  }, []);
   return (
     <main className="min-h-screen relative">
       <nav className="bg-primary h-14 flex items-center">
@@ -137,7 +136,7 @@ export default function Home() {
                           imageUrl: imgUrl,
                         },
                       });
-                      getAllImages();
+                      setImages((prev) => prev.filter((url) => url !== imgUrl));
                       toast({
                         title: "Image Deleted",
                         description: "Image deleted successfully",
